@@ -100,24 +100,4 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   targets.forEach(el => io.observe(el));
-
-  // Counters
-  const counters = document.querySelectorAll('[data-target]');
-  const countIO = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      const target = parseInt(el.dataset.target, 10);
-      if (Number.isNaN(target)) return;
-      const dur = 1100, start = performance.now();
-      const tick = t => {
-        const p = Math.min(1, (t - start) / dur);
-        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-      countIO.unobserve(el);
-    });
-  }, { threshold: 0.4 });
-  counters.forEach(el => countIO.observe(el));
 })();
